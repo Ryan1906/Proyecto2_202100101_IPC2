@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listaEmpresas>
+    <empresa id="25">
+        <nombre> Gabriel y Asociados </nombre>
+        <abreviatura> G.Y.A </abreviatura>
+        <listaPuntosAtencion>
+            <puntoAtencion id="2">
+                <nombre> Majadas </nombre>
+                <direccion> Centro comercial Majadas</direccion>
+                <listaEscritorios>
+                    <escritorio id="1">
+                    <identificacion> #1f48</identificacion>
+                    <encargado> Pablo </encargado>
+                    </escritorio>
+                </listaEscritorios>
+            </puntoAtencion>
+        </listaPuntosAtencion>
+        <listaTransacciones>
+            <transaccion id="249">
+                <nombre> Pago Laptop </nombre>
+                <tiempoAtencion> 30 </tiempoAtencion>
+            </transaccion>
+        </listaTransacciones>
+    </empresa>
+    <empresa id="28">
+        <nombre> Patronilo y Asociados </nombre>
+        <abreviatura> P.Y.A </abreviatura>
+        <listaPuntosAtencion>
+            <puntoAtencion id="2">
+                <nombre> Portales </nombre>
+                <direccion> Centro comercial Portales</direccion>
+                <listaEscritorios>
+                    <escritorio id="1">
+                    <identificacion> #1f48</identificacion>
+                    <encargado> Pablo </encargado>
+                    </escritorio>
+                </listaEscritorios>
+            </puntoAtencion>
+            <puntoAtencion id="3">
+                <nombre> Miraflores </nombre>
+                <direccion> Centro comercial Miraflores</direccion>
+                <listaEscritorios>
+                    <escritorio id="1">
+                    <identificacion> #1f48</identificacion>
+                    <encargado> Pablo </encargado>
+                    </escritorio>
+                </listaEscritorios>
+            </puntoAtencion>
+        </listaPuntosAtencion>
+        <listaTransacciones>
+            <transaccion id="249">
+                <nombre> Pago Laptop </nombre>
+                <tiempoAtencion> 30 </tiempoAtencion>
+            </transaccion>
+        </listaTransacciones>
+    </empresa>
+</listaEmpresas>
