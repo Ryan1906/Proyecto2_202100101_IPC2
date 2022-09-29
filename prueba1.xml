@@ -12,13 +12,17 @@
                     <identificacion> #1f48</identificacion>
                     <encargado> Pablo </encargado>
                     </escritorio>
+                    <escritorio id="50">
+                    <identificacion> #5487f48</identificacion>
+                    <encargado> Ryan </encargado>
+                    </escritorio>
                 </listaEscritorios>
             </puntoAtencion>
         </listaPuntosAtencion>
         <listaTransacciones>
-            <transaccion id="249">
-                <nombre> Pago Laptop </nombre>
-                <tiempoAtencion> 30 </tiempoAtencion>
+            <transaccion id="250">
+                <nombre> Pago De chiquistrikis </nombre>
+                <tiempoAtencion> 10 </tiempoAtencion>
             </transaccion>
         </listaTransacciones>
     </empresa>
@@ -30,9 +34,9 @@
                 <nombre> Portales </nombre>
                 <direccion> Centro comercial Portales</direccion>
                 <listaEscritorios>
-                    <escritorio id="1">
-                    <identificacion> #1f48</identificacion>
-                    <encargado> Pablo </encargado>
+                    <escritorio id="2">
+                    <identificacion> #2f48</identificacion>
+                    <encargado> JuanChorizo </encargado>
                     </escritorio>
                 </listaEscritorios>
             </puntoAtencion>
@@ -40,9 +44,9 @@
                 <nombre> Miraflores </nombre>
                 <direccion> Centro comercial Miraflores</direccion>
                 <listaEscritorios>
-                    <escritorio id="1">
-                    <identificacion> #1f48</identificacion>
-                    <encargado> Pablo </encargado>
+                    <escritorio id="55">
+                    <identificacion> #54f48</identificacion>
+                    <encargado> Jeshua </encargado>
                     </escritorio>
                 </listaEscritorios>
             </puntoAtencion>
