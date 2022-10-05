@@ -10,13 +10,18 @@ class listaempresa():
         self.size = 0
         
 
+    def eliminardatos(self):
+
+        self.primero=None
+        self.ultimo= None
+        self.size = 0
+        
 
 
-
-    def insertar_empresa(self, IDEmpresa, nombreE, abreviaturaE, listaPuntos, listaescritorio):
+    def insertar_empresa(self, IDEmpresa, nombreE, abreviaturaE, listaPuntos, listaescritorio, listaTrans):
         global DatosEmpresa
-        DatosEmpresa= nodo(info=[IDEmpresa, nombreE, abreviaturaE, listaPuntos, listaescritorio])
-        self.size += 1
+        DatosEmpresa= nodo(info=[IDEmpresa, nombreE, abreviaturaE, listaPuntos, listaescritorio, listaTrans])
+        
         if self.primero is None:
             self.primero = DatosEmpresa
             self.ultimo= DatosEmpresa
@@ -25,6 +30,8 @@ class listaempresa():
             while tmp.getsiguiente() is not None:
                 tmp=tmp.getsiguiente()
             tmp.setsiguiente(DatosEmpresa)
+        
+        self.size += 1
     
 
     def mostrarempresa(self):
@@ -54,6 +61,15 @@ class listaempresa():
                             print("Código: ", tmp.info[4][numesc][3])
                             numesc+=1
                             break
+
                 numeracion_puntoa +=1
+            numeracion_trans=0
+            for j in tmp.info[5]:
+                print("--TRANSACCIONES--")
+                print("ID: ", tmp.info[5][numeracion_trans][0])
+                print("Nombre: ", tmp.info[5][numeracion_trans][1])
+                print("Tiempo de Atención: ", tmp.info[5][numeracion_trans][2])
+                numeracion_trans+=1
+                
             print("---------------------------------")
             tmp=tmp.getsiguiente()

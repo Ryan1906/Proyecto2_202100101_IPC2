@@ -4,6 +4,9 @@ class nodo():
         self.info = info
         self.siguiente = None
 
+
+
+
     def getsiguiente(self):
         return self.siguiente
     

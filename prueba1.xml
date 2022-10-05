@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <listaEmpresas>
     <empresa id="25">
         <nombre> Gabriel y Asociados </nombre>
@@ -58,4 +57,102 @@
             </transaccion>
         </listaTransacciones>
     </empresa>
-</listaEmpresas>
+<empresa id="23">
+        <nombre> Ryan y Asociados </nombre>
+        <abreviatura> R.Y.A </abreviatura>
+        <listaPuntosAtencion>
+            <puntoAtencion id="2">
+                <nombre> Majadas </nombre>
+                <direccion> Centro comercial Majadas</direccion>
+                <listaEscritorios>
+                    <escritorio id="1">
+                    <identificacion> #1f48</identificacion>
+                    <encargado> Pablo </encargado>
+                    </escritorio>
+                    <escritorio id="50">
+                    <identificacion> #5487f48</identificacion>
+                    <encargado> Ryan </encargado>
+                    </escritorio>
+                </listaEscritorios>
+            </puntoAtencion>
+        </listaPuntosAtencion>
+        <listaTransacciones>
+            <transaccion id="250">
+                <nombre> Pago De chiquistrikis </nombre>
+                <tiempoAtencion> 10 </tiempoAtencion>
+            </transaccion>
+        </listaTransacciones>
+    </empresa>
+<empresa id="23">
+   <nombre> Barcelona </nombre>
+    <abreviatura>FCB</abreviatura>
+<listaPuntosAtencion>
+        <puntoAtencion id="50">
+            <nombre>Santa Clara</nombre>
+            <direccion>Villa Nueva</direccion>
+            <listaEscritorios>
+               <escritorio id="15">
+                <identificacion> #1234</identificacion>
+                <encargado> Ryan </encargado>
+                </escritorio>
+               <escritorio id="15">
+                <identificacion> #1234</identificacion>
+                <encargado> Ryan </encargado>
+                </escritorio>
+           </listaEscritorios>
+        </puntoAtencion>
+        <puntoAtencion id="51">
+            <nombre>Catalunya</nombre>
+            <direccion>Cata</direccion>
+            <listaEscritorios>
+               <escritorio id="15">
+                <identificacion> #1234</identificacion>
+                <encargado> Ryan </encargado>
+                </escritorio>
+           </listaEscritorios>
+        </puntoAtencion>
+    </listaPuntosAtencion>
+    <listaTransacciones>
+        <transaccion id="250">
+            <nombre> Pago De chiquistrikis </nombre>
+            <tiempoAtencion> 10 </tiempoAtencion>
+        </transaccion>
+    </listaTransacciones>
+</empresa>
+<empresa id="52">
+   <nombre> Madrid </nombre>
+    <abreviatura>RM</abreviatura>
+<listaPuntosAtencion>
+        <puntoAtencion id="12">
+            <nombre>Bernabeu</nombre>
+            <direccion>Madrid Capital</direccion>
+            <listaEscritorios>
+               <escritorio id="1">
+                <identificacion> #9867</identificacion>
+                <encargado> Ryan </encargado>
+                </escritorio>
+               <escritorio id="2">
+                <identificacion> #9867</identificacion>
+                <encargado> Juan </encargado>
+                </escritorio>
+           </listaEscritorios>
+        </puntoAtencion>
+        <puntoAtencion id="13">
+            <nombre>Barcelona</nombre>
+            <direccion>Catalunya</direccion>
+            <listaEscritorios>
+               <escritorio id="1">
+                <identificacion> #9867</identificacion>
+                <encargado> Ryan </encargado>
+                </escritorio>
+           </listaEscritorios>
+        </puntoAtencion>
+    </listaPuntosAtencion>
+    
+    <listaTransacciones>
+        <transaccion id="250">
+            <nombre> Pago De chiquistrikis </nombre>
+            <tiempoAtencion> 10 </tiempoAtencion>
+        </transaccion>
+    </listaTransacciones>
+</empresa></listaEmpresas>
