@@ -1,29 +1,15 @@
 from calendar import c
+from glob import glob
 from telnetlib import SE
 from tkinter import filedialog as fd
 from xml.dom import minidom
-
+import graphviz 
 from lista import listaempresa
 from listaTransacciones import listatransacciones1
 listaempresa = listaempresa()
+listatransacciones1 = listatransacciones1()
 from xml.etree.cElementTree import parse, Element
 import xml.etree.ElementTree as ET
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def LimpiarSistema():
@@ -86,10 +72,8 @@ def CargarArchivo():
     docxml = ET.parse(filename)
     root = docxml.getroot()
 
-    listaIDCliente=[]
+    
     listaempresas =[]
-
-    listaTransacciones =[]
 
     for x in root.findall('empresa'): #Aqui se puede filtrar por ID './/empresa[@id="'+i+'"]'
         
@@ -111,13 +95,16 @@ def CargarArchivo():
             listaPuntosA.append([IDPuntaAtencion,NombrePuntoAtencion,DireccionPuntoAtencion])
 
             ListEscritorios =  y.find('listaEscritorios')
-
+            global listaIDEscritorio
+            listaIDEscritorio = []
             for z in ListEscritorios.findall('escritorio'):
 
                 IDEscritorio =z.attrib.get('id')
                 IdentificacionEscritorio = z.find('identificacion').text
                 EncargadoEscritorio = z.find('encargado').text
-                listaEscritorio.append([IDPuntaAtencion, IDEscritorio,IdentificacionEscritorio,EncargadoEscritorio])
+                ActividadEscritorio = False
+                listaIDEscritorio.append(IDEscritorio)
+                listaEscritorio.append([IDPuntaAtencion, IDEscritorio,IdentificacionEscritorio,EncargadoEscritorio, ActividadEscritorio, listaIDEscritorio])
         
         transacciones = x.find('listaTransacciones') #lista de transacciones
         listatransacciones=[]
@@ -131,6 +118,80 @@ def CargarArchivo():
             
         listaempresa.insertar_empresa(IDempresa,NombreEmpresa, AbreviaturaEmpresa, listaPuntosA,listaEscritorio,listatransacciones)
     listaempresa.mostrarempresa()
+
+def graphviz1():
+
+    cadenas =[]
+    graphvizcadena = "digraph{"
+
+    
+    for k in datos.findall('configInicial'):
+        global config_idE
+        global config_idP
+        config_id=(k.attrib.get('id'))
+        config_idE=(k.attrib.get('idEmpresa'))
+        config_idP=(k.attrib.get('idPunto'))
+        escritorio_act=k.find('escritoriosActivos')
+        global escritorio
+        escritorio=[]
+        transaccion=[]
+        cantidad=[]
+        contca =0
+        for m in escritorio_act.findall('escritorio'):
+            global escritorio_id
+            
+            escritorio_id=(m.attrib.get('idEscritorio'))
+            
+            escritorio.append([escritorio_id])
+            cadenas.append('[label = "'+escritorio_id+ '"shape = rectangle sides = 6 color = orange style = filled peripheries = 2]')
+            
+            graphvizcadena +="BOXE"+str(contca)+cadenas[contca]+"\n"
+            contca +=1
+        cadenas1 =[]
+        clientes_list=k.find('listadoClientes')
+        listaclientes =[]
+        contCliente = 0
+        for n in clientes_list.findall('cliente'):
+            cliente_dpi=(n.attrib.get('dpi'))
+            cliente_nombre=(n.find('nombre').text)
+            listaclientes.append([cliente_dpi,cliente_nombre])
+            cadenas1.append('[label = "'+cliente_dpi+' '+ cliente_nombre +'"shape = rectangle sides = 6 color = orange style = filled peripheries = 2]')
+            
+            graphvizcadena +="BOXC"+str(contCliente)+cadenas1[contCliente]+"\n"
+            contCliente+=1
+            trans_list=n.find('listadoTransacciones')
+            
+
+            for l in trans_list.findall('transaccion'):
+                trans_id=l.attrib.get('idTransaccion')
+                trans_cantidad=l.attrib.get('cantidad')
+                transaccion.append([cliente_dpi, trans_id,trans_cantidad])
+                
+
+        #Agregar datos al nodo a través de la lista
+        listatransacciones1.insertar_trans(config_id, config_idE, config_idP, escritorio, listaclientes, transaccion)
+    listatransacciones1.mostrar_trans()
+
+
+
+    # Box1[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
+    # Box2[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
+    # Box3[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
+    # Box4[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
+    # Box5[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
+    # Box6[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
+
+    # Box1 -> Box2 -> Box3 -> Box4 -> Box5 -> Box6 
+
+
+    # }
+
+    miArchivo = open('Resultados.dot','w')
+    miArchivo.write(graphvizcadena)
+    miArchivo.close
+
+    
+
 
 
 def CrearNuevaE():
@@ -199,7 +260,7 @@ def CrearNuevaE():
     listIDTrans =[]
     listNomTransaccion = []
     listTiempoTrans =[]
-    for i in range(str(NumTransacciones)):
+    for i in range(int(NumTransacciones)):
 
 
         IdTransacciones = input("Ingrese lael id de la transaccion No." + str(ContTrans)+ ": ")
@@ -222,38 +283,177 @@ def CrearNuevaE():
     
     actualizar()
 
+def CrearClientes():
+    print("Se va a crear Clientes")
 
-def insertTransacciones():
-    #Abrir archivos (XML y todos los archivos)
-    archivo = fd.askopenfilename(initialdir="C:/", title="abrir", filetypes=(("XML files",".XML"),("Todos los archivos",".*")))
-    datos = ET.parse(archivo)
+
+    #Pedimos los datos del nuevo cliente, tanto su nombre, como el dpi
+    DPICCliente = input("Ingrese el dpi del nuevo cliente")
+    NombreCCliente = input("Ingrese el nombre del cliente")
+    numTrans = input("Cuantas Transacciones desea agregar?")
+
+    #------------------------------------------------------------------------------------
+    DatsoClienteN ="<cliente dpi='"+str(DPICCliente)+"'>\n"
+    DatsoClienteN += "<nombre>"+str(NombreCCliente)+"</nombre>\n"
+    DatsoClienteN += " <listadoTransacciones>\n"
+    for i in range(int(numTrans)):
+        IDNtranssacion = input("Cuál es el ID de la Transaccion?")
+        CantNTransaccion = input("Qué cantidad de transaccione desea")
+        DatsoClienteN += '<transaccion idTransaccion="'+ str(IDNtranssacion)+'" cantidad ="'+str(CantNTransaccion)+'"/>\n'
+
+
+    DatsoClienteN += " </listadoTransacciones>"
+    DatsoClienteN += "</cliente>"
+    #------------------------------------------------------------------------------------
+    #Miramos la configuración donde sea integrar al cliente
+
+    ChooseConfig = input("Que simulación desea seleccionar?(ID)")
+
+
+
+    #Lo metemos dentro el listado de Clientes
+    for i in datos.findall('.//configInicial[@id="'+ChooseConfig+'"]'): #Aqui se puede filtrar por ID './/empresa[@id="'+i+'"]'
+        clientes_list=i.find('listadoClientes')
+        print(clientes_list)
+        print(DatsoClienteN)
+        ClienteNueva = ET.fromstring(DatsoClienteN)
+        print(ClienteNueva)
+        clientes_list.append(ClienteNueva)
+        datos.write(filename2)
+    
+    actualizar2()
+
+   
+
+
+def actualizar2():
+
     
     for k in datos.findall('configInicial'):
+        global config_idE
+        global config_idP
         config_id=(k.attrib.get('id'))
         config_idE=(k.attrib.get('idEmpresa'))
         config_idP=(k.attrib.get('idPunto'))
         escritorio_act=k.find('escritoriosActivos')
+        global escritorio
         escritorio=[]
         transaccion=[]
         cantidad=[]
         for m in escritorio_act.findall('escritorio'):
+            global escritorio_id
+            
+            escritorio_id=(m.attrib.get('idEscritorio'))
+            
+            escritorio.append([escritorio_id])
+
+        clientes_list=k.find('listadoClientes')
+        listaclientes =[]
+        for n in clientes_list.findall('cliente'):
+            cliente_dpi=(n.attrib.get('dpi'))
+            cliente_nombre=(n.find('nombre').text)
+            listaclientes.append([cliente_dpi,cliente_nombre])
+            trans_list=n.find('listadoTransacciones')
+            
+
+            for l in trans_list.findall('transaccion'):
+                trans_id=l.attrib.get('idTransaccion')
+                trans_cantidad=l.attrib.get('cantidad')
+                transaccion.append([cliente_dpi, trans_id,trans_cantidad])
+                
+
+        #Agregar datos al nodo a través de la lista
+        listatransacciones1.insertar_trans(config_id, config_idE, config_idP, escritorio, listaclientes, transaccion)
+    listatransacciones1.mostrar_trans()
+
+
+
+def ArchTrans():
+    global filename2
+    filename2 = fd.askopenfilename(initialdir="C:/", title="abrir", filetypes=(("XML files",".XML"),("Todos los archivos",".*")))
+    global datos
+    datos = ET.parse(filename2)
+    global root2
+    root2 = datos.getroot()
+
+
+    
+    for k in datos.findall('configInicial'):
+
+        global config_idE
+        global config_idP
+        global escritorio
+
+        config_id=(k.attrib.get('id'))
+        config_idE=(k.attrib.get('idEmpresa'))
+        config_idP=(k.attrib.get('idPunto'))
+
+        escritorio1=k.find('escritoriosActivos')
+        
+        escritorio=[]
+        transaccion=[]
+        
+
+        for l in escritorio1.findall('escritorio'):
+            global escritorio_id
+            
+            escritorio_id=(l.attrib.get('idEscritorio'))
+            
+            escritorio.append([escritorio_id])
+
+        clienteslistado=k.find('listadoClientes')
+        listaclientes =[]
+
+        for j in clienteslistado.findall('cliente'):
+            cliente_dpi=(j.attrib.get('dpi'))
+            cliente_nombre=(j.find('nombre').text)
+            listaclientes.append([cliente_dpi,cliente_nombre])
+            trans_list=j.find('listadoTransacciones')
+            
+
+            for k in trans_list.findall('transaccion'):
+                trans_id=k.attrib.get('idTransaccion')
+                trans_cantidad=k.attrib.get('cantidad')
+                transaccion.append([cliente_dpi, trans_id,trans_cantidad])
+                
+
+        #Agregar datos al nodo a través de la lista
+        listatransacciones1.insertar_trans(config_id, config_idE, config_idP, escritorio, listaclientes, transaccion)
+    listatransacciones1.mostrar_trans()
+
+def PuntosAtencionArray():
+    datos = ET.parse(filename2)
+      
+    for k in datos.findall('configInicial'):
+        trans_id=(k.attrib.get('id'))
+    
+        trans_idE=(k.attrib.get('idEmpresa'))
+        
+        trans_idP=(k.attrib.get('idPunto'))
+        escritorio_act=k.find('escritoriosActivos')
+        
+        escritorio=[]
+        transaccion=[]
+        cantidad=[]
+        clientes=[]
+        for m in escritorio_act.findall('escritorio'):
+            
             escritorio_id=(m.attrib.get('idEscritorio'))
             escritorio.append([escritorio_id])
         clientes_list=k.find('listadoClientes')
         for n in clientes_list.findall('cliente'):
             cliente_dpi=(n.attrib.get('dpi'))
             cliente_nombre=(n.find('nombre').text)
+            clientes.append([cliente_dpi, cliente_nombre])
             trans_list=n.find('listadoTransacciones')
             for l in trans_list.findall('transaccion'):
                 trans_id=l.attrib.get('idTransaccion')
                 trans_cantidad=l.attrib.get('cantidad')
-                transaccion.append([trans_id])
-                cantidad.append([trans_cantidad])
+                transaccion.append([cliente_dpi, trans_id, trans_cantidad])
 
-        #Agregar datos al nodo a través de la lista
-        listatransacciones1.insertar_trans(config_id, config_idE, config_idP, escritorio, cliente_dpi, cliente_nombre, transaccion, cantidad)
-
-
+        for i in escritorio:
+            listaempresa.activarescritorios(trans_idE,trans_idP,*i)                    
+        listaempresa.Select(trans_idE,trans_idP)
 
 
 print("Bienvenido a nuestra Aplicación")
@@ -264,10 +464,11 @@ print("(2) Cargar archivo")
 print("(3) Crear nueva Empresa")
 print("(4) Cargar archivo con configuracion inicial para la prueba")
 print("(5) Salir")
+print("(6) Puntos Atención")
 
 Seleccion = input("¿Qué desea hacer?")
 
-while Seleccion =="1" or Seleccion =="2" or Seleccion =="3" or Seleccion =="4" or Seleccion =="5":
+while Seleccion =="1" or Seleccion =="2" or Seleccion =="3" or Seleccion =="4" or Seleccion =="5"or Seleccion =="6" or Seleccion =="7":
 
     if Seleccion == "1":
         LimpiarSistema()
@@ -278,6 +479,21 @@ while Seleccion =="1" or Seleccion =="2" or Seleccion =="3" or Seleccion =="4" o
     elif Seleccion =="3":
         CrearNuevaE()
     
+    elif Seleccion =="4":
+        ArchTrans()
+    
+    elif Seleccion =="5":
+        PuntosAtencionArray()
+    
+    elif Seleccion =="6":
+        CrearClientes()
+    
+    elif Seleccion =="7":
+        graphviz1()
+    
+
+
+        
     
 
 

@@ -1,3 +1,4 @@
+from ast import While
 from nodo import nodo
 
 import xml.etree.cElementTree as ET
@@ -33,7 +34,49 @@ class listaempresa():
         
         self.size += 1
     
-
+    
+    def Select(self,IDEmpre, punto):
+            
+            tmp = self.primero
+            numeracion_puntoa2=0
+            while tmp is not None:
+                if IDEmpre != tmp.info[0]:
+                    tmp=tmp.getsiguiente()
+                else:
+                    print("- - - - - - - - - - - - - - - - - - - - - - - - -")
+                    print("- - - - - - - - - - - - - - - - - - - - - - - - -")
+                    print("-- EMPRESA SELECCIONADA --")
+                    print("ID: ", tmp.info[0])
+                    print("Nombre: ", tmp.info[1])
+                    print("Abreviación: ", tmp.info[2])
+                    print("--PUNTOS DE ATENCIÓN--")
+                    numeracion_puntoa=0
+                    while punto != tmp.info[3][numeracion_puntoa2][0]: #tmp.info[3] son los puntos de atención
+                        numeracion_puntoa2+=1
+                    else:
+                        print("- - - - - - - - - - - - - - - - - - - - - - - - -")
+                        print("-- PUNTO DE ATENCIÓN SELECCIONADO --")
+                        print("ID: ", tmp.info[3][numeracion_puntoa2][0])
+                        print("Nombre: ", tmp.info[3][numeracion_puntoa2][1])
+                        print("Direccion: ", tmp.info[3][numeracion_puntoa2][2])
+                        print("-- ESCRITORIOS --")
+                        numeracion_esc=0
+                        for i in tmp.info[4]:
+                            if tmp.info[4][numeracion_esc][0]!=tmp.info[3][numeracion_puntoa2][0]:
+                                numeracion_esc+=1
+                            else:
+                                #Comparo el id conectado de los escritorios con los id del punto de atención
+                                while tmp.info[4][numeracion_esc][0]==tmp.info[3][numeracion_puntoa2][0]: #tmp.info[4] son los escritorios
+                                    print("ID: ", tmp.info[4][numeracion_esc][1])
+                                    print("Código: ", tmp.info[4][numeracion_esc][2])
+                                    print("Nombre: ", tmp.info[4][numeracion_esc][3])
+                                    if tmp.info[4][numeracion_esc][4]==True:
+                                        print("Estado de escritorio:  ACTIVO")
+                                    else:
+                                        print("Estado de escritorio:  INACTIVO")
+                                    numeracion_esc+=1
+                                    break
+                    break
     def mostrarempresa(self):
         tmp = self.primero
         conteo=0
@@ -73,3 +116,28 @@ class listaempresa():
                 
             print("---------------------------------")
             tmp=tmp.getsiguiente()
+    
+    def activarescritorios(self,IDEmpre,punto, escritorios):
+        tmp = self.primero
+        numeracion_puntoa2=0
+        while tmp is not None:
+            if IDEmpre != tmp.info[0]:
+                tmp=tmp.getsiguiente()
+            else:
+                while punto != tmp.info[3][numeracion_puntoa2][0]: #tmp.info[3] son los puntos de atención
+                    numeracion_puntoa2+=1
+                else:
+                    numeracion_esc=0
+                    for i in tmp.info[4]:
+                        if tmp.info[4][numeracion_esc][0]!=tmp.info[3][numeracion_puntoa2][0]:
+                            numeracion_esc+=1
+                        else:
+                            #Comparo el id conectado de los escritorios con los id del punto de atención
+                            while tmp.info[4][numeracion_esc][0]==tmp.info[3][numeracion_puntoa2][0]: #tmp.info[4] son los escritorios
+                                while tmp.info[4][numeracion_esc][1]==escritorios:
+                                    tmp.info[4][numeracion_esc][4]=True
+                                    break
+                                numeracion_esc+=1
+                                break
+                                
+                break

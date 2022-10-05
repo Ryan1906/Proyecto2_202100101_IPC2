@@ -1,0 +1,13 @@
+digraph{
+
+Box1[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
+Box2[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
+Box3[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
+Box4[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
+Box5[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
+Box6[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
+
+Box1 -> Box2 -> Box3 -> Box4 -> Box5 -> Box6 
+
+
+}

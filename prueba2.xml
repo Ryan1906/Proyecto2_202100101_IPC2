@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<listadoInicial>
+    <configInicial id="21" idEmpresa="25" idPunto="2">
+        <escritoriosActivos>
+            <escritorio idEscritorio="1"/>
+            <escritorio idEscritorio="50"/>
+        </escritoriosActivos>
+        <listadoClientes>
+            <cliente dpi="145587">
+                <nombre> Roberto Culo Abierto </nombre>
+                <listadoTransacciones>
+                    <transaccion idTransaccion="450" cantidad="2300"/>
+                    <transaccion idTransaccion="120" cantidad="1240"/>
+                </listadoTransacciones>
+            </cliente>
+        </listadoClientes>
+    </configInicial>
+</listadoInicial>
