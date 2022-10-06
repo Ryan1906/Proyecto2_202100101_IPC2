@@ -15,10 +15,13 @@ import xml.etree.ElementTree as ET
 def LimpiarSistema():
     print("Se Limpió Sistema")
 
-    listaempresa.eliminardatos()
+    listaempresa.DELETE()
 
 def actualizar():
- 
+
+    
+    listaempresas =[]
+
     for x in root.findall('empresa'): #Aqui se puede filtrar por ID './/empresa[@id="'+i+'"]'
         
         IDempresa = x.attrib.get('id')
@@ -39,27 +42,29 @@ def actualizar():
             listaPuntosA.append([IDPuntaAtencion,NombrePuntoAtencion,DireccionPuntoAtencion])
 
             ListEscritorios =  y.find('listaEscritorios')
-
+            global listaIDEscritorio
+            listaIDEscritorio = []
             for z in ListEscritorios.findall('escritorio'):
 
                 IDEscritorio =z.attrib.get('id')
                 IdentificacionEscritorio = z.find('identificacion').text
                 EncargadoEscritorio = z.find('encargado').text
-                listaEscritorio.append([IDPuntaAtencion, IDEscritorio,IdentificacionEscritorio,EncargadoEscritorio])
+                ActividadEscritorio = False
+                listaIDEscritorio.append(IDEscritorio)
+                listaEscritorio.append([IDPuntaAtencion, IDEscritorio,IdentificacionEscritorio,EncargadoEscritorio, ActividadEscritorio, listaIDEscritorio])
         
-        transacciones = x.find('listaTransacciones') #lista de transacciones
+        transacciones = x.find('listaTransacciones')
         listatransacciones=[]
         for a in transacciones.findall('transaccion'):
 
-            Id_transaccion = a.attrib.get('id') #id transaccion
-            Nombre_transaccion = a.find('nombre').text #nombre transaccion
-            Tiempo = a.find('tiempoAtencion').text #tiempo transaccion
+            Id_transaccion = a.attrib.get('id')
+            Nombre_transaccion = a.find('nombre').text 
+            Tiempo = a.find('tiempoAtencion').text
             listatransacciones.append([Id_transaccion,Nombre_transaccion,Tiempo])
-        
             
             
         listaempresa.insertar_empresa(IDempresa,NombreEmpresa, AbreviaturaEmpresa, listaPuntosA,listaEscritorio,listatransacciones)
-    listaempresa.mostrarempresa()   
+    listaempresa.mostrarempresa()
 
 def CargarArchivo():
 
@@ -106,13 +111,13 @@ def CargarArchivo():
                 listaIDEscritorio.append(IDEscritorio)
                 listaEscritorio.append([IDPuntaAtencion, IDEscritorio,IdentificacionEscritorio,EncargadoEscritorio, ActividadEscritorio, listaIDEscritorio])
         
-        transacciones = x.find('listaTransacciones') #lista de transacciones
+        transacciones = x.find('listaTransacciones')
         listatransacciones=[]
         for a in transacciones.findall('transaccion'):
 
-            Id_transaccion = a.attrib.get('id') #id transaccion
-            Nombre_transaccion = a.find('nombre').text #nombre transaccion
-            Tiempo = a.find('tiempoAtencion').text #tiempo transaccion
+            Id_transaccion = a.attrib.get('id')
+            Nombre_transaccion = a.find('nombre').text 
+            Tiempo = a.find('tiempoAtencion').text 
             listatransacciones.append([Id_transaccion,Nombre_transaccion,Tiempo])
             
             
@@ -166,26 +171,17 @@ def graphviz1():
                 trans_id=l.attrib.get('idTransaccion')
                 trans_cantidad=l.attrib.get('cantidad')
                 transaccion.append([cliente_dpi, trans_id,trans_cantidad])
-                
 
-        #Agregar datos al nodo a través de la lista
+    
+
+       
         listatransacciones1.insertar_trans(config_id, config_idE, config_idP, escritorio, listaclientes, transaccion)
     listatransacciones1.mostrar_trans()
 
 
 
-    # Box1[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
-    # Box2[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
-    # Box3[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
-    # Box4[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
-    # Box5[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
-    # Box6[label = "Tarea 3" shape = rectangle sides = 6 color = orange style = filled peripheries = 2]
-
-    # Box1 -> Box2 -> Box3 -> Box4 -> Box5 -> Box6 
-
-
-    # }
-
+    
+    graphvizcadena += "}" 
     miArchivo = open('Resultados.dot','w')
     miArchivo.write(graphvizcadena)
     miArchivo.close
@@ -269,9 +265,9 @@ def CrearNuevaE():
         listIDTrans.append(NomTransacciones)
         TempoTransacciones = input("Ingrese el tiempo de la Transaccion No." + str(ContTrans)+ ": ")
         listIDTrans.append(TempoTransacciones)
-        cadena+=  "        <transaccion id='250'>\n"
-        cadena+=  "            <nombre> Pago De chiquistrikis </nombre>\n"
-        cadena+=  "            <tiempoAtencion> 10 </tiempoAtencion>\n"
+        cadena+=  "        <transaccion id='"+IdTransacciones+"'>\n"
+        cadena+=  "            <nombre> "+ NomTransacciones+"</nombre>\n"
+        cadena+=  "            <tiempoAtencion> "+ TempoTransacciones + "</tiempoAtencion>\n"
         cadena+=  "        </transaccion>\n"
     cadena+=  "    </listaTransacciones>\n"
     cadena+=  "</empresa>\n"
@@ -362,7 +358,7 @@ def actualizar2():
                 transaccion.append([cliente_dpi, trans_id,trans_cantidad])
                 
 
-        #Agregar datos al nodo a través de la lista
+        
         listatransacciones1.insertar_trans(config_id, config_idE, config_idP, escritorio, listaclientes, transaccion)
     listatransacciones1.mostrar_trans()
 
@@ -417,7 +413,6 @@ def ArchTrans():
                 transaccion.append([cliente_dpi, trans_id,trans_cantidad])
                 
 
-        #Agregar datos al nodo a través de la lista
         listatransacciones1.insertar_trans(config_id, config_idE, config_idP, escritorio, listaclientes, transaccion)
     listatransacciones1.mostrar_trans()
 
@@ -463,8 +458,9 @@ print("(1) Limpiar sistemas")
 print("(2) Cargar archivo")
 print("(3) Crear nueva Empresa")
 print("(4) Cargar archivo con configuracion inicial para la prueba")
-print("(5) Salir")
-print("(6) Puntos Atención")
+print("(5) Activar Escritorios")
+print("(6) Crear Clientes")
+print("(7) Generar Graphviz")
 
 Seleccion = input("¿Qué desea hacer?")
 
@@ -504,7 +500,10 @@ while Seleccion =="1" or Seleccion =="2" or Seleccion =="3" or Seleccion =="4" o
     print("(2) Cargar archivo")
     print("(3) Crear nueva Empresa")
     print("(4) Cargar archivo con configuracion inicial para la prueba")
-    print("(5) Salir")
+    print("(5) Activar Escritorios")
+    print("(6) Crear Clientes")
+    print("(7) Generar Graphviz")
+
     Seleccion= input("Qué desea Hacer?")
 
 
@@ -513,30 +512,6 @@ while Seleccion =="1" or Seleccion =="2" or Seleccion =="3" or Seleccion =="4" o
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-        # for y in transacciones.findall('transaccion'):
-
-        #     IDTransaccion = y.attrib.get('id')
-        #     NombreTransaccion = y.find('nombre').text
-        #     TiempoAtencion =y.find('tiempoAtencion').text
-        #     listaTransacciones.append([IDTransaccion,NombreTransaccion,TiempoAtencion])
-       
 
 
 
